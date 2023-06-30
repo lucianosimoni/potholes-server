@@ -47,7 +47,7 @@ export async function userRegister(req, res) {
   }
 
   const hashedPassword = await bcrypt.hash(password, 15);
-  const user = { username, hashedPassword };
+  const user = { username: username.toLowerCase(), hashedPassword };
 
   try {
     const registeredUser = await createUser(user);

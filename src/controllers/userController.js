@@ -2,18 +2,20 @@ import {
   deleteUser,
   getAllUsers,
   getUserById,
+  getUserByUsername,
   updateUser,
 } from "../models/userModel.js";
 import {
   missingBody,
   missingParams,
   userIdNotFound,
+  userUsernameNotFound,
 } from "../utils/responseUtils.js";
 
 // 🟢 User Creation is in the authController.js
 
 export async function userGet(req, res) {
-  const { userId } = req.query;
+  const { userId, userUsername } = req.query;
 
   if (userId) {
     try {
@@ -30,6 +32,22 @@ export async function userGet(req, res) {
         .json({ error: "An error occurred while getting user by id." });
     }
     return;
+  }
+
+  if (userUsername) {
+    try {
+      const user = await getUserByUsername(userUsername);
+      if (!user) {
+        return userUsernameNotFound(res);
+      }
+      delete user.hashedPassword;
+      return res.status(200).json({ user });
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while getting user by username." });
+    }
   }
 
   // Return all users

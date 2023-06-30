@@ -24,9 +24,11 @@ export async function getPotholesByUserId(userId) {
   const database = await connectToMongoDB();
   const potholesCollection = database.collection("potholes");
 
-  const pothole = await potholesCollection.find({
-    userId: new ObjectId(userId),
-  });
+  const pothole = await potholesCollection
+    .find({
+      userId: new ObjectId(userId),
+    })
+    .toArray();
 
   return pothole;
 }

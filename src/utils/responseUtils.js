@@ -66,6 +66,14 @@ export function userIdNotFound(res) {
     },
   });
 }
+export function userUsernameNotFound(res) {
+  return res.status(404).json({
+    error: {
+      code: "USERNAME_NOT_FOUND",
+      message: "Username does not exist",
+    },
+  });
+}
 export function potholeIdNotFound(res) {
   return res.status(404).json({
     error: {
