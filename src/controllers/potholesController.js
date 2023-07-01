@@ -22,7 +22,10 @@ export async function potholeCreate(req, res) {
     !pothole.title ||
     !pothole.description ||
     !(pothole.images instanceof Array) ||
-    !(pothole.position instanceof Object)
+    !(pothole.position instanceof Object) ||
+    pothole.images.length !== 3 ||
+    !pothole.position.hasOwnProperty("lat") ||
+    !pothole.position.hasOwnProperty("lng")
   ) {
     return missingBody(res);
   }
@@ -116,30 +119,30 @@ export async function potholeUpdate(req, res) {
     }
     return res.status(201).json({ updatedPothole });
   } catch (error) {
-    console.log("⚠️🔴 An error occurred while getting Pothole by UserId.");
+    console.log("⚠️🔴 An error occurred while getting Pothole by id.");
     res
       .status(500)
-      .json({ error: "An error occurred while updating Pothole by UserId." });
+      .json({ error: "An error occurred while updating Pothole by id." });
   }
 }
 
 export async function potholeDelete(req, res) {
-  const { userId } = req.params;
+  const { potholeId } = req.params;
 
-  if (!userId) {
+  if (!potholeId) {
     return missingParams(res);
   }
 
   try {
-    const deletedProfile = await deletePotholeById(userId);
-    if (!deletedProfile) {
+    const deletedPothole = await deletePotholeById(potholeId);
+    if (!deletedPothole) {
       return potholeIdNotFound(res);
     }
-    return res.status(201).json({ deletedProfile });
+    return res.status(201).json({ deletedPothole });
   } catch (error) {
-    console.log("⚠️🔴 An error occurred while getting Pothole by UserId.");
+    console.log("⚠️🔴 An error occurred while getting Pothole by id.");
     res
       .status(500)
-      .json({ error: "An error occurred while updating pothole by UserId." });
+      .json({ error: "An error occurred while updating pothole by id." });
   }
 }

@@ -5,12 +5,13 @@ import {
   potholeUpdate,
   potholeDelete,
 } from "../controllers/potholesController.js";
+import authenticate from "../middleware/authenticate.js";
 
 const router = express.Router();
 
-router.post("/", potholeCreate);
+router.post("/", authenticate, potholeCreate);
 router.get("/", potholeGet);
-router.put("/:potholeId", potholeUpdate);
-router.delete("/:potholeId", potholeDelete);
+router.put("/:potholeId", authenticate, potholeUpdate);
+router.delete("/:potholeId", authenticate, potholeDelete);
 
 export default router;

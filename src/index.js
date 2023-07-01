@@ -25,7 +25,7 @@ app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/user", authenticate, userRouter);
-app.use("/potholes", authenticate, potholesRouter);
+app.use("/potholes", potholesRouter);
 
 app.listen(3000, () => {
   console.log(`🚀 CORS-enabled Web Server is running at ${serverAddress()}`);
